@@ -70,7 +70,7 @@ videoRef.once("value", function(snapshot) {
             now = new Date().getTime();
             if ((now - lastUpdate) > 1000) {
                 lastUpdate = now;
-                me.update({ "currentTime": myTime });
+                me.update({ "currentTime": videoPlayer.currentTime() });
             }
         });
 		
