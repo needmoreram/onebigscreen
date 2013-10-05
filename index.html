@@ -66,12 +66,18 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>             
 <script>
     $(document).ready(function() {
         $("form").submit(function(event) {
             event.preventDefault();
+
+            /// generate a unique UUID associated with the URL
             var url = $("#url").val();
-            window.location.href = "view.html?url=" + url;
+            var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
+            var roomRef = fireBaseRef.push({"url": url});
+            var id = roomRef.path.m[1];
+            window.location.href = "view.html?id=" + id;
         });
     });
 </script>
