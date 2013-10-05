@@ -1,9 +1,13 @@
 <html>
-    <title>VIDEO TEST</title>
-    <body>
-        <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-        <script src="http://vjs.zencdn.net/c/video.js"></script>
-        <video id=home_video controls preload=auto width=640 height=264 poster="http://e528jk1jmf5pzd.cloudfront.net/clip.jpg" data-setup="{}"> <source src="https://s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4'/>
-        </video>
-    </body>
+<head>
+	<link href="//vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
+	<script src="//vjs.zencdn.net/4.1/video.js"></script>
+</head>
+<body>
+	<video id="mvp" controls preload="auto" data-setup="{}">
+	    <source src="//s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4' />
+		<source src="//s3.amazonaws.com/wesync/big_buck_bunny.webm" type='video/webm' />
+		Wait...Video JS is supposed to catch this!
+	</video>
+</body>
 </html>
