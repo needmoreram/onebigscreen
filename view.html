@@ -23,10 +23,20 @@
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
-        <h3 class="text-muted">One Big Screen</h3>
+        <h3 class="text-muted"><a href="//onebigscreen.com/">One Big Screen</a></h3>
     </div>
 
-    <video id="mvp" controls preload="auto" class="video-js vjs-default-skin" width="640" height="264"></video>
+    <video id="mvp" controls preload="auto" class="video-js vjs-default-skin" width="100%" height="400">
+        <track kind="captions" src="https://s3.amazonaws.com/storage.onebigscreen.com/How.I.Met.Your.Mother.S09E03.HDTV.x264-LOL.HI.srt" srclang="en" label="English" default>
+    </video>
+    <div id="chat">This is a test</div>
+    <form role="form" class="form-inline">                                  
+        <div class="form-group">                                            
+            <label class="sr-only" for="url">URL</label>                    
+            <input type="url" class="form-control" id="text">
+        </div>                                                              
+    <button id="go" type="submit" class="btn">Go!</button>
+    </form>    
 
     <div class="footer">
         <p>&copy; One Big Screen 2013</p>
