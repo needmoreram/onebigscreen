@@ -1,9 +1,24 @@
-if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", init, false);
-} else {
-    window.onload = init;
+var fb = new Firebase("https://obs.firebaseio.com/");
+var videoInfo;
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+$(document).ready(function() {
+    var id = getParameterByName("id");
+    console.log(id);
+    var videoRef = fb.child("videos").child(id);
+    fb.once("value", function(snapshot) {
+        videoInfo = snapshot.val();
+        console.log(videoInfo.url);
+    });
+});
+
+if (false) {
 var fb = new Firebase("https://wesync.firebaseio.com/");
 var fbv = fb.child('videos').child('0'); // TODO: Don't hardcode video id
 var people = fbv.child('people');
@@ -63,4 +78,5 @@ function initVideo() {
 function announceMyPresence() {
     myName = "Guest";
     people.push();
+}
 }
