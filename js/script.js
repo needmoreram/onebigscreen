@@ -40,16 +40,21 @@ videoRef.once("value", function(snapshot) {
 		var numPeople = 0;
 		var me, myName, myTime = 0;
 		
+		myName = prompt("Your name?"); // XXX TODO Sanitize
+
         // Average the time of all participants and start there
 		people.once("value", function(snapshot) {
+            console.log("checking...");
 			var everyone = snapshot.val();
 			numPeople = everyone.length;
 			for (i = 0; i < numPeople; i ++) {
 				console.log(everyone[i] + " is in this room");
 				myTime += everyone[i].currentTime;
 			}
-			if (numPeople)
+			if (numPeople) {
 				myTime = myTime / numPeople;
+                videoPlayer.currentTime(myTime);
+            }
 		});
 		/* people.on("child_added", function(snapshot) {
 			console.log(snapshot.name + " is in this room");
@@ -57,7 +62,6 @@ videoRef.once("value", function(snapshot) {
 		}); */
 		
 		// Add yourself to the people list
-		myName = prompt("Your name?"); // XXX TODO Sanitize
 		console.log("Welcome " + myName);
 		me = people.child(myName);
 		me.set({ "currentTime": myTime });
