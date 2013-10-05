@@ -76,7 +76,7 @@
             var url = $("#url").val();
             var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
             var videoRef = fireBaseRef.push();
-            videoRef.set({"url": url}, function() {
+            videoRef.set({"url": url, currentTime: 0, status: "pause"}, function() {
                 var id = videoRef.path.m[1];
                 window.location.href = "view.html?id=" + id;
             });
