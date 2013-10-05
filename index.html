@@ -4,40 +4,88 @@
 	<script src="//vjs.zencdn.net/4.1/video.js"></script>
     <script src='https://cdn.firebase.com/v0/firebase.js'></script>
     <script>
-        function loadEvents() {
-            var myPlayer = videojs("mvp");
 
-            // set up FireBase
-            var videoStatus = new Firebase("https://wesync.firebaseio.com/videos/id/status");
-            videoStatus.on("value", function(snapshot) {
-                if (snapshot.val() === null) {
-                    console.log("Status not set.");
-                } else {
-                    var status = snapshot.val();
-                    console.log("Status changed to " + status);
-                    if (status == "play") {
-                        myPlayer.play();
-                    } else if (status == "pause") {
-                        myPlayer.pause();
-                    }
+		if (document.addEventListener) {
+			document.addEventListener("DOMContentLoaded", init, false);
+		} else {
+			window.onload = init;
+		}
+
+		var fb = new Firebase("https://wesync.firebaseio.com/");
+		var fbv = fb.child('videos').child('0'); // TODO: Don't hardcode video id
+		var cdn_url, vinfo;
+		var need_sync = 0;
+
+		var myPlayer;
+
+		fb.child('content').once('value', function(snapshot) {
+			cdn_url = snapshot.val().direct; // TODO: change to CDN
+			fbv.once('value', function(snapshot) {
+				vinfo = snapshot.val();
+				console.log("fetched video info");
+				initVideo();
+			});
+		});
+		
+		function init() {
+			console.log("init");
+			myPlayer = videojs("mvp");
+			myPlayer.on("play", function() {
+				if (need_sync) {
+					myPlayer.currentTime(vinfo.current_time);
+					need_sync = 0;
+				}
+			});
+		}
+		
+		function initVideo() {
+			if (!myPlayer) {
+				setTimeout(initVideo, 1000);
+				return;
+			}
+			if (vinfo) {
+				myPlayer.src([
+					{ type: "video/mp4", src: cdn_url + vinfo.url.mp4 },
+					{ type: "video/webm", src: cdn_url + vinfo.url.webm }
+				]);
+				need_sync = 1;
+				if (vinfo.status == "play")
+					myPlayer.play();
+			}
+		}
+
+		/* fb.on("value", function(snapshot) {
+            if (snapshot.val() === null) {
+                console.log("Status not set");
+            } else {
+                var status = snapshot.val();
+                console.log("Status changed to " + status);
+                if (status == "play") {
+                    myPlayer.play();
+                } else if (status == "pause") {
+                    myPlayer.pause();
                 }
-            });
+            }
+		});
 
-            // add events to videojs
-            var publishEvent = function(eventType){
-                console.log("Event " + eventType + " triggered...");
-                videoStatus.set(eventType);
-            };
+		function publishEvent(eventType) {
+            console.log("Event " + eventType + " triggered...");
+            fb.set(eventType);
+		}
+
+        function init() {
+            myPlayer = videojs("mvp");
             myPlayer.on("play", function() { publishEvent("play") });
             myPlayer.on("pause", function() { publishEvent("pause") });
-        }
+        } */
+
     </script>
 </head>
-<body onload="loadEvents()">
-	<video id="mvp" controls preload="auto" data-setup="{ 'example_option':true }">
-	    <source src="//s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4' />
+<body>
+	<video id="mvp" controls preload="auto" data-setup="{}">
+	    <!-- <source src="//s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4' />
 		<source src="//s3.amazonaws.com/wesync/big_buck_bunny.webm" type='video/webm' />
-		Wait...Video JS is supposed to catch this!
+		Wait...Video JS is supposed to catch this! -->
 	</video>
 </body>
 </html>
