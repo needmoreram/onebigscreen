@@ -2,16 +2,38 @@
 <head>
 	<link href="//vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
 	<script src="//vjs.zencdn.net/4.1/video.js"></script>
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
     <script>
-        var myPlayer = videojs("mvp");
-        var publishEvent = function(eventType){
-          var myPlayer = this;
-          console.log("Event " + eventType + " triggered...");
-        };
-        myPlayer.on("play", function() { publishEvent("play") });
+        function loadEvents() {
+            var myPlayer = videojs("mvp");
+
+            // set up FireBase
+            var videoStatus = new Firebase("https://wesync.firebaseio.com/videos/id/status");
+            videoStatus.on("value", function(snapshot) {
+                if (snapshot.val() === null) {
+                    console.log("Status not set.");
+                } else {
+                    var status = snapshot.val();
+                    console.log("Status changed to " + status);
+                    if (status == "play") {
+                        myPlayer.play();
+                    } else if (status == "pause") {
+                        myPlayer.pause();
+                    }
+                }
+            });
+
+            // add events to videojs
+            var publishEvent = function(eventType){
+                console.log("Event " + eventType + " triggered...");
+                videoStatus.set(eventType);
+            };
+            myPlayer.on("play", function() { publishEvent("play") });
+            myPlayer.on("pause", function() { publishEvent("pause") });
+        }
     </script>
 </head>
-<body>
+<body onload="loadEvents()">
 	<video id="mvp" controls preload="auto" data-setup="{ 'example_option':true }">
 	    <source src="//s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4' />
 		<source src="//s3.amazonaws.com/wesync/big_buck_bunny.webm" type='video/webm' />
