@@ -75,9 +75,11 @@
             /// generate a unique UUID associated with the URL
             var url = $("#url").val();
             var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
-            var roomRef = fireBaseRef.push({"url": url});
-            var id = roomRef.path.m[1];
-            window.location.href = "view.html?id=" + id;
+            var videoRef = fireBaseRef.push();
+            videoRef.push({"url": url}, function() {
+                var id = videoRef.path.m[1];
+                window.location.href = "view.html?id=" + id;
+            });
         });
     });
 </script>
