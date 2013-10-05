@@ -44,30 +44,31 @@ videoRef.once("value", function(snapshot) {
 
         // Average the time of all participants and start there
 		people.once("value", function(snapshot) {
-            console.log("checking...");
 			var everyone = snapshot.val();
-			numPeople = everyone.length;
-			for (i = 0; i < numPeople; i ++) {
-				console.log(everyone[i] + " is in this room");
-				myTime += everyone[i].currentTime;
+            var numPeople = 0;
+            for (person in everyone) {
+				console.log(person + " is in this room");
+				myTime += everyone[person].currentTime;
+                numPeople += 1;
 			}
-			if (numPeople) {
+            if (numPeople) {
+                console.log(myTime);
+                console.log(numPeople);
 				myTime = myTime / numPeople;
+                console.log("skipping to " + myTime);
                 videoPlayer.currentTime(myTime);
             }
+            //
+            // Add yourself to the people list
+            console.log("Welcome " + myName);
+            me = people.child(myName);
+            me.set({ "currentTime": myTime });
+            me.onDisconnect().remove();
 		});
 		/* people.on("child_added", function(snapshot) {
 			console.log(snapshot.name + " is in this room");
 			numPeople ++;
 		}); */
-		
-		// Add yourself to the people list
-		console.log("Welcome " + myName);
-		me = people.child(myName);
-		me.set({ "currentTime": myTime });
-		
-		// Setup disconnect callbacks
-		me.onDisconnect().remove();
 		
         var lastUpdate = new Date().getTime();
         videoPlayer.on("timeupdate", function() {
