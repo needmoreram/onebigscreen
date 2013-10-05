@@ -2,6 +2,14 @@
 <head>
 	<link href="//vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
 	<script src="//vjs.zencdn.net/4.1/video.js"></script>
+    <script>
+        var myPlayer = videojs("mvp");
+        var publishEvent = function(eventType){
+          var myPlayer = this;
+          console.log("Event " + eventType + " triggered...");
+        };
+        myPlayer.on("play", function() { publishEvent("play") });
+    </script>
 </head>
 <body>
 	<video id="mvp" controls preload="auto" data-setup="{}">
