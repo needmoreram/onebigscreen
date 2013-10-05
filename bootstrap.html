@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bootstrap 101 Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<!-- Custom style -->
+<link href="//getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" media="screen">
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="bootstrap-3.0.0/assets/js/html5shiv.js"></script>
+      <script src="bootstrap-3.0.0/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <h3 class="text-muted">One Big Screen</h3>
+    </div>
+
+    <div class="jumbotron">
+        <h1>Watch videos with your online friends</h1>
+        <p class="lead">Copy and paste a video link below and we will create a custom page where you can watch it in sync with your friends. Play, pause and chat while watching it together!</p>
+        <!--<p><a class="btn btn-lg btn-success" href="#">Sign up today</a></p>-->
+        <form role="form" class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="url">URL</label>
+                <input type="url" class="form-control" id="url" placeholder="http://">
+            </div>
+            <button type="submit" class="btn btn-lg btn-success">Go!</button>
+        </form>
+    </div>
+
+    <div class="row marketing">
+        <div class="col-lg-6">
+            <h4>Amazon S3</h4>
+            <p>Upload your videos to Amazon S3 and paste the link directly here. <a href="help/s3.html">Instructions for uploading to S3</a>.</p>
+
+            <h4>Dropbox</h4>
+            <p>Use the link from any video you have stored in Dropox. <a href="help/dropbox.html">Instructions for using a Dropbox video</a>.</p>
+
+            <!--
+            <h4>Subheading</h4>
+            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+            -->
+        </div>
+
+        <div class="col-lg-6">
+            <h4>YouTube <span class="badge">Coming soon!</span></h4>
+            <p>Watch any video from YouTube by pasting its link here.</p>
+
+            <h4>Put.io <span class="badge">Coming soon!</span></h4>
+            <p>Watch videos from torrents hosted on <a href="http://put.io/">Put.io</a>.</p>
+
+            <!--
+            <h4>Subheading</h4>
+            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+            -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; One Big Screen 2013</p>
+    </div>
+
+</div> <!-- /container -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+
