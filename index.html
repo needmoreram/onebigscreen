@@ -3,7 +3,7 @@
 <head>
 <title>One Big Screen &mdash; watch videos with your online friends</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="imgs/favicon.png">              
+<link rel="shortcut icon" href="imgs/favicon.png">
 <!-- Bootstrap -->
 <link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <!-- Custom style -->
@@ -14,9 +14,16 @@
       <script src="bootstrap-3.0.0/assets/js/html5shiv.js"></script>
       <script src="bootstrap-3.0.0/assets/js/respond.min.js"></script>
     <![endif]-->
+<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <p class="navbar-text pull-right">
+            <span id="greeting"></span>
+            <a href="#" id="btnLogin">Login</a>
+        </p>
+    </nav>
     <div class="header">
         <h3 class="text-muted text-center"><img src="imgs/obsLogo5HD-t.png"/></h3>
     </div>
@@ -29,7 +36,7 @@
             <div class="row">
                 <div class="col-md-10">
                     <label class="sr-only" for="url">URL</label>
-                    <input type="url" class="form-control" id="url" value="http://www.youtube.com/watch?v=Qu9mjy56Xbs">
+                    <input type="url" class="form-control" id="url" value="http://www.youtube.com/watch?v=F-JFPePh6yM">
                 </div>
                 <div class="col-md-2">
                     <button id="go" type="submit" class="btn btn-lg btn-success">Go!</button>
@@ -66,7 +73,128 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
-<script src='https://cdn.firebase.com/v0/firebase.js'></script>             
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type='text/javascript'
+        src='https://cdn.firebase.com/v0/firebase-simple-login.js'>
+</script>
+<script src="js/plugins/jquery.cookie.js"></script>
+<script src="js/loginscript.js"></script>
+<script>
+    var curruser = null;
+    var authRef, auth;
+    $(document).ready(function () {
+        authRef = new Firebase("https://onebigscreen-fblogin.firebaseio.com");
+        auth = new FirebaseSimpleLogin(authRef, processLogin);
+        $("form").submit(function (event) {
+            event.preventDefault();
+
+            // parse URL
+            var url = $("#url").val();
+            var parsed = document.createElement("a");
+            parsed.href = url;
+
+            if (parsed.hostname == "www.youtube.com") {
+                page = "youtube.html";
+            } else {
+                page = "video.html";
+            }
+
+            var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
+            var videoRef = fireBaseRef.push();
+            videoRef.set({ "url": url, currentTime: 0, status: "pause" }, function () {
+                var id = videoRef.path.m[1];
+                window.location.href = page + "?id=" + id;
+            });
+        });
+        $("#btnLogin").click(function () {
+            if ($(this).text() === 'Login') {
+                loginUser();
+                $(this).text('Logout');
+            }
+            else {
+                logoutUser();
+                $(this).text('Login');
+            }
+            return false;
+        });
+        getCurrentUser({
+            onComplete: function (data) {
+                if (data) {
+                    console.log(data);
+                    curruser = data;
+                    displayUser();
+                    $("#btnLogin").text('Logout');
+                }
+            },
+            onError: function (error) {
+                if (error) {
+                    console.log(error);
+                }
+                $("#btnLogin").text('Login');
+            }
+        });
+    });
+    var processLogin = function (error, user) {
+        if (error) {
+            console.log(error);
+        }
+        if (user) {
+            $.cookie('firebaseAuthToken', user.firebaseAuthToken);
+            $.cookie('facebookAuthToken', user.accessToken);
+            curruser = { id: user.id,
+                fullName: user.name,
+                firstName: user.first_name,
+                lastName: user.last_name
+            };
+            displayUser();
+        }
+    }
+
+    var displayUser = function () {
+        $("#greeting").html("Hi, " + curruser.fullName);
+    }
+
+    var loginUser = function () {
+        auth.login('facebook', {
+            rememberMe: true,
+            scope: 'email,read_friendlists'
+        });
+    }
+    var logoutUser = function () {
+        $.removeCookie('firebaseAuthToken');
+        $.removeCookie('facebookAuthToken');
+        auth.logout();
+        authRef.unauth();
+        $("#greeting").html("");
+    }
+
+    var getCurrentUser = function (callback) {
+        if (!$.cookie('firebaseAuthToken') || !$.cookie('facebookAuthToken')) {
+            callback.onComplete();
+            return;
+        }
+        authRef.auth($.cookie('firebaseAuthToken'), function (error, result) {
+            if (error) {
+                callback.onError(error);
+            }
+            else {
+                if (result != null) {
+                    $.ajax({
+                        url: 'https://graph.facebook.com/me?access_token=' + $.cookie('facebookAuthToken')
+                    }).done(function (data) {
+                        callback.onComplete({
+                            id: data.id,
+                            fullName: data.name,
+                            firstName: data.first_name,
+                            lastName: data.last_name
+                        });
+                        //callback.onComplete(data);
+                    });
+                }
+            }
+        });
+    }
+</script>
 <script>
     $(document).ready(function() {
         $("form").submit(function(event) {

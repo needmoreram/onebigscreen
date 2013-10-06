@@ -3,7 +3,7 @@
 <head>
 <title>One Big Screen &mdash; watch videos with your online friends</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="imgs/favicon.png">                              
+<link rel="shortcut icon" href="imgs/favicon.png">
 <!-- Bootstrap -->
 <link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <!-- Custom style -->
@@ -17,6 +17,12 @@
 <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <p class="navbar-text pull-right">
+        <span id="greeting"></span>
+        <a href="#" id="btnLogin">Login</a>
+    </p>
+</nav>
 <div class="container">
     <h3 class="text-muted text-center"><a href="/"><img src="imgs/obsLogo5HD-t.png"/></a></h3>
 </div>
@@ -48,6 +54,7 @@ You can change your name by typing: <code>/alias NAME</code>.</p>
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
             <div class="sidebar-nav">
+                <button id="sendfacebookinvite" type="submit" class="btn">Invite Facebook Friends</button>
                 <dl id="users">
                     <dt>People watching</dt>
                 </dl>
@@ -67,7 +74,61 @@ You can change your name by typing: <code>/alias NAME</code>.</p>
 <script src="js/plugins/jquery.cookie.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
-<script src='https://cdn.firebase.com/v0/firebase.js'></script>             
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+<script type='text/javascript'
+        src='https://cdn.firebase.com/v0/firebase-simple-login.js'>
+</script>
+<script src="js/plugins/jquery.cookie.js"></script>
+<script src="js/loginscript.js"></script>
+<script>
+        var authRef, auth;
+        var curruser = null;
+        $(document).ready(function () {
+            console.log(window.location);
+            $.getScript('//connect.facebook.net/en_UK/all.js', function () {
+                FB.init({
+                    appId: '595216043874435',
+                    channelUrl: '//yourapp.com/channel.html'
+                });
+                $("#sendfacebookinvite").click(function () {
+                    FB.ui({
+                        method: 'send',
+                        link: window.location.hostname === "localhost" ? "http://onebigscreen.com/youtube.html?id=-J5G9DnADhOtJBwlIFLb" : window.location.href
+                    });
+                    return false;
+                });
+            });
+            authRef = new Firebase("https://onebigscreen-fblogin.firebaseio.com");
+            auth = new FirebaseSimpleLogin(authRef, processLogin);
+            $("#btnLogin").click(function () {
+                if ($(this).text() === 'Login') {
+                    loginUser();
+                    $(this).text('Logout');
+                }
+                else {
+                    logoutUser();
+                    $(this).text('Login');
+                }
+                return false;
+            });
+            getCurrentUser({
+                onComplete: function (data) {
+                    if (data) {
+                        console.log(data);
+                        curruser = data;
+                        displayUser();
+                        $("#btnLogin").text('Logout');
+                    }
+                },
+                onError: function (error) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    $("#btnLogin").text('Login');
+                }
+            });
+        });
+</script>
 <script src="js/firebase.js"></script>
 <script src="js/players/youtube.js"></script>
 <script src="js/presence.js"></script>

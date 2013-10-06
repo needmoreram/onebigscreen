@@ -8,3 +8,9 @@
     overflow: scroll;
     overflow-x: hidden;
 }
+
+body { padding-top: 70px; }
+
+#btnLogin {
+    margin-right: 50px;
+}
