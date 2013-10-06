@@ -4,6 +4,7 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var videoPlayer, me;
+var userName = $.cookie('userName') || "guest"; 
 
 // this global variable is used to differentiate between user triggered events
 // from events that are triggered from Firebase
@@ -40,7 +41,7 @@ function onPlayerReady(event) {
      * or keep the video paused, as necessary.
      */
     // add ourselves
-    me = videoRef.child("people").push();
+    me = videoRef.child("people").push({"name": userName}); 
     me.onDisconnect().remove();
     setInterval(function() {
         me.update({"currentTime": videoPlayer.getCurrentTime()});
