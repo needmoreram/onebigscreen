@@ -72,13 +72,22 @@
         $("form").submit(function(event) {
             event.preventDefault();
 
-            /// generate a unique UUID associated with the URL
+            // parse URL
             var url = $("#url").val();
+            var parsed = document.createElement("a");
+            parsed.href = url;
+
+            if (parsed.hostname == "www.youtube.com") {
+                page = "youtube.html";
+            } else {
+                page = "video.html";
+            }
+
             var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
             var videoRef = fireBaseRef.push();
             videoRef.set({"url": url, currentTime: 0, status: "pause"}, function() {
                 var id = videoRef.path.m[1];
-                window.location.href = "view.html?id=" + id;
+                window.location.href = page + "?id=" + id;
             });
         });
     });

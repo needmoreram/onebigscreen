@@ -8,8 +8,19 @@ function getParameterByName(name) {
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-function getType(filepath) {
-    tokens = filepath.split(".");
+function getType(url) {
+    // lazu URL parsing
+    // http://www.joezimjs.com/javascript/the-lazy-mans-url-parsing/
+    var parser = document.createElement('a');
+    parser.href = url;
+
+    // check for youtube video
+    if (parser.hostname == "www.youtube.com") {
+        console.log("Playing a YouTube video");
+        return "video/youtube";
+    } 
+
+    tokens = parser.pathname.split(".");
     extension = tokens[tokens.length-1];
     return "video/" + extension;
 }
@@ -29,7 +40,7 @@ videoRef.once("value", function(snapshot) {
         videoPlayer = videojs("mvp");
         videoPlayer.src({
             type: getType(videoInfo.url),
-            src: videoInfo.url,
+            src: videoInfo.url
         });
 		
         // set up local events
