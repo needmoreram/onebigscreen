@@ -3,10 +3,11 @@
 <head>
 <title>One Big Screen &mdash; watch videos with your online friends</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="imgs/favicon.png">                              
 <!-- Bootstrap -->
 <link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <!-- Custom style -->
-<link href="//getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" media="screen">
+<link href="//getbootstrap.com/examples/offcanvas/offcanvas.css" rel=stylesheet" media="screen">
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -18,22 +19,32 @@
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <ul class="nav nav-pills pull-right">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted"><a href="//onebigscreen.com/">One Big Screen</a></h3>
-    </div>
+    <h3 class="text-muted text-center"><a href="/"><img src="imgs/obsLogo5HD-t.png"/></a></h3>
+</div>
 
-    <div id="player"></div>
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+            <div id="player"></div>
+        </div><!--/span-->
 
-    <div class="footer">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+            <div class="sidebar-nav">
+                <dl>
+                    <dt>Also watching</dt>
+                    <dd>Roberto</dd>
+                    <dd>Ram</dd>
+                </dl>
+            </div><!--/.well -->
+        </div><!--/span-->
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
         <p>&copy; One Big Screen 2013</p>
-    </div>
-
-</div> <!-- /container -->
+    </footer>
+</div><!--/.container-->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="//code.jquery.com/jquery.js"></script>
