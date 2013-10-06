@@ -30,26 +30,30 @@
         <p class="lead">Copy and paste a video link below and we will create a custom page where you can watch it in sync with your friends. Play, pause and chat while watching it together!</p>
         <!--<p><a class="btn btn-lg btn-success" href="#">Sign up today</a></p>-->
         <form role="form" class="form-inline">
-            <div class="form-group">
-                <label class="sr-only" for="url">URL</label>
-                <input type="url" class="form-control" id="url" placeholder="http://">
+            <div class="row">
+                <div class="col-md-10">
+                    <label class="sr-only" for="url">URL</label>
+                    <input type="url" class="form-control" id="url" value="http://www.youtube.com/watch?v=F-JFPePh6yM">
+                </div>
+                <div class="col-md-2">
+                    <button id="go" type="submit" class="btn btn-lg btn-success">Go!</button>
+                </div>
             </div>
-            <button id="go" type="submit" class="btn btn-lg btn-success">Go!</button>
         </form>
     </div>
 
     <div class="row marketing">
         <div class="col-lg-6">
+            <h4>YouTube</h4>
+            <p>Watch any video from YouTube by pasting its link here.</p>
+
             <h4>Amazon S3</h4>
             <p>Upload your videos to Amazon S3 and paste the link directly here. <a href="help/s3.html">Instructions for uploading to S3</a>.</p>
-
-            <h4>Dropbox</h4>
-            <p>Use the link from any video you have stored in Dropox. <a href="help/dropbox.html">Instructions for using a Dropbox video</a>.</p>
         </div>
 
         <div class="col-lg-6">
-            <h4>YouTube <span class="badge">Coming soon!</span></h4>
-            <p>Watch any video from YouTube by pasting its link here.</p>
+            <h4>Dropbox</h4>
+            <p>Use the link from any video you have stored in Dropbox. <a href="help/dropbox.html">Instructions for using a Dropbox video</a>.</p>
 
             <h4>Put.io <span class="badge">Coming soon!</span></h4>
             <p>Watch videos from torrents hosted on <a href="http://put.io/">Put.io</a>.</p>
