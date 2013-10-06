@@ -9,7 +9,7 @@ function getParameterByName(name) {
 }
 
 function getType(url) {
-    // lazu URL parsing
+    // lazy URL parsing
     // http://www.joezimjs.com/javascript/the-lazy-mans-url-parsing/
     var parser = document.createElement('a');
     parser.href = url;
@@ -43,7 +43,7 @@ videoRef.once("value", function(snapshot) {
             src: videoInfo.url
         });
 		
-        // set up local events
+        // Set up local events
         videoPlayer.on("play", function() { publishEvent("play") });
         videoPlayer.on("pause", function() { publishEvent("pause") });
 		
@@ -51,12 +51,9 @@ videoRef.once("value", function(snapshot) {
 		var numPeople = 0;
 		var me, myName, myTime = 0;
 		
-		myName = prompt("Your name?"); // XXX TODO Sanitize
-
         // Average the time of all participants and start there
 		people.once("value", function(snapshot) {
 			var everyone = snapshot.val();
-            var numPeople = 0;
             for (person in everyone) {
 				console.log(person + " is in this room");
 				myTime += everyone[person].currentTime;
@@ -70,17 +67,23 @@ videoRef.once("value", function(snapshot) {
 				// XXX TODO Start buffering at (myTime - 1)
                 videoPlayer.currentTime(myTime);
             }
-            //
+           
+            // Setup people listeners
+            people.on("child_added", function(snapshot) {
+                numPeople ++;
+                console.log(snapshot.name() + " has joined the room " + numPeople);
+            });
+            people.on("child_removed", function(snapshot) {
+                numPeople --;
+                console.log(snapshot.name() + " has left the room " + numPeople);
+            });
+ 
             // Add yourself to the people list
             console.log("Welcome " + myName);
             me = people.child(myName);
             me.set({ "currentTime": myTime });
             me.onDisconnect().remove();
-		});
-		/* people.on("child_added", function(snapshot) {
-			console.log(snapshot.name + " is in this room");
-			numPeople ++;
-		}); */
+        });
 		
         var lastUpdate = new Date().getTime();
         videoPlayer.on("timeupdate", function() {
