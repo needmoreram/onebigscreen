@@ -1,4 +1,4 @@
-One-Big-Screen
+OneBigScreen
 ==============
 
 A web application to enjoy streaming videos with friends in real-time. 
