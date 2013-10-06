@@ -83,9 +83,9 @@
                 page = "video.html";
             }
 
-            var fireBaseRef = new Firebase("https://obs.firebaseio.com/videos");
-            var videoRef = fireBaseRef.push();
-            videoRef.set({"url": url, currentTime: 0, status: "pause"}, function() {
+            var videosRef = new Firebase("https://obs.firebaseio.com/videos");
+            var videoRef = videosRef.push();
+            videoRef.set({"url": url, status: {"action": "pause", "position": 0}}, function() {
                 var id = videoRef.path.m[1];
                 window.location.href = page + "?id=" + id;
             });

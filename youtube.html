@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>One Big Screen &mdash; watch videos with your online friends</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<!-- Custom style -->
+<link href="//getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" media="screen">
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="bootstrap-3.0.0/assets/js/html5shiv.js"></script>
+      <script src="bootstrap-3.0.0/assets/js/respond.min.js"></script>
+    <![endif]-->
+<link href="//vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <h3 class="text-muted"><a href="//onebigscreen.com/">One Big Screen</a></h3>
+    </div>
+
+    <div id="player"></div>
+
+    <div class="footer">
+        <p>&copy; One Big Screen 2013</p>
+    </div>
+
+</div> <!-- /container -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>             
+<script src="js/firebase.js"></script>
+<script src="js/players/youtube.js"></script>
+</body>
+</html>
