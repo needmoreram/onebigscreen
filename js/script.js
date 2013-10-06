@@ -56,7 +56,7 @@ videoRef.once("value", function(snapshot) {
                 console.log(numPeople);
 				myTime = myTime / numPeople;
                 console.log("skipping to " + myTime);
-				videoPlayer.buffered().start(myTime - 1);
+				// XXX TODO Start buffering at (myTime - 1)
                 videoPlayer.currentTime(myTime);
             }
             //
