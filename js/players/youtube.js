@@ -5,6 +5,9 @@ var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 var me;
+
+// this global variable is used to differentiate between user triggered events
+// from events that are triggered from Firebase
 var userStateChange = true;
 
 var UPDATE_INTERVAL = 10;  // seconds
@@ -66,8 +69,11 @@ function onPlayerReady(event) {
             name = snapshot.child("name").val();
             console.log("RECEIVE: " + action + "(" + position + ")");
             if (name != me.name()) {
+                // seek to the position
                 userStateChange = false;
                 player.seekTo(position, true);
+
+                // and change state
                 userStateChange = false;
                 if (action == "play") {
                     player.playVideo();
