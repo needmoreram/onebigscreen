@@ -7,6 +7,7 @@ if (document.addEventListener) {
 var fb = new Firebase("https://wesync.firebaseio.com/");
 var fbv = fb.child('videos').child('0'); // TODO: Don't hardcode video id
 var people = fbv.child('people');
+
 var cdn_url, vinfo;
 var need_sync = 0;
 
@@ -34,6 +35,7 @@ function init() {
             myPlayer.currentTime(vinfo.current_time);
             need_sync = 0;
         }
+		
     });
     /* myPlayer.on("timeupdate", function(t){
         console.log(t);
@@ -57,7 +59,8 @@ function initVideo() {
     }
 }
 
+/* Should we use .info/connected for announcing presence instead? */
 function announceMyPresence() {
     myName = "Guest";
-    console.log();
+    people.push();
 }
