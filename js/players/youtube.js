@@ -3,14 +3,13 @@ var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-var player;
-var me;
+var videoPlayer, me;
 
 // this global variable is used to differentiate between user triggered events
 // from events that are triggered from Firebase
 var userStateChange = true;
 
-var UPDATE_INTERVAL = 10;  // seconds
+var UPDATE_INTERVAL = 1;  // seconds
 
 function onYouTubeIframeAPIReady() {
     videoRef.once("value", function(snapshot) {
@@ -22,7 +21,7 @@ function onYouTubeIframeAPIReady() {
         parsed.href = url;
         var videoId = /\?v=(.+)/.exec(parsed.search)[1];
 
-        player = new YT.Player('player', {
+        videoPlayer = new YT.Player('player', {
             height: '400',
             width: '100%',
             videoId: videoId,
@@ -44,7 +43,7 @@ function onPlayerReady(event) {
     me = videoRef.child("people").push();
     me.onDisconnect().remove();
     setInterval(function() {
-        me.update({"currentTime": player.getCurrentTime()});
+        me.update({"currentTime": videoPlayer.getCurrentTime()});
     }, UPDATE_INTERVAL*1000);
 
     // got to current time
@@ -53,16 +52,15 @@ function onPlayerReady(event) {
         currentTime = 0, n = 0;
         videoRef.child("people").once("value", function(snapshot) {
             snapshot.forEach(function(person) {
-                console.log("here");
                 currentTime += person.val().currentTime || 0;
-                n += 1        
+                n += 1;
             });
             currentTime = n > 0 ? currentTime / n : 0;
             console.log("Seeking to: " + currentTime);
-            player.seekTo(currentTime, true);
+            videoPlayer.seekTo(currentTime, true);
         });
 
-        // add play/pause events
+        // receive play/pause events
         videoRef.child("status").on("value", function(snapshot) {
             action = snapshot.child("action").val();
             position = snapshot.child("position").val();
@@ -71,14 +69,14 @@ function onPlayerReady(event) {
             if (name != me.name()) {
                 // seek to the position
                 userStateChange = false;
-                player.seekTo(position, true);
+                videoPlayer.seekTo(position, true);
 
                 // and change state
                 userStateChange = false;
                 if (action == "play") {
-                    player.playVideo();
+                    videoPlayer.playVideo();
                 } else if (action == "pause") {
-                    player.pauseVideo();
+                    videoPlayer.pauseVideo();
                 }
             }
         });
@@ -98,7 +96,7 @@ function onPlayerStateChange(event) {
     }
 
     // get current position
-    position = player.getCurrentTime() || 0;
+    position = videoPlayer.getCurrentTime() || 0;
 
     if (event.data == YT.PlayerState.PLAYING) {
         console.log("SEND: play (" + position + ")");
