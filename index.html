@@ -13,20 +13,26 @@
 
 		var fb = new Firebase("https://wesync.firebaseio.com/");
 		var fbv = fb.child('videos').child('0'); // TODO: Don't hardcode video id
+		var people = fbv.child('people');
 		var cdn_url, vinfo;
 		var need_sync = 0;
 
 		var myPlayer;
+		var myName;
+		var myTime;
+
+		var tu_counter = 0;
 
 		fb.child('content').once('value', function(snapshot) {
 			cdn_url = snapshot.val().direct; // TODO: change to CDN
-			fbv.once('value', function(snapshot) {
-				vinfo = snapshot.val();
-				console.log("fetched video info");
-				initVideo();
-			});
 		});
-		
+
+		fbv.once('value', function(snapshot) {
+			vinfo = snapshot.val();
+			console.log("fetched video info");
+			initVideo();
+		});
+
 		function init() {
 			console.log("init");
 			myPlayer = videojs("mvp");
@@ -36,8 +42,12 @@
 					need_sync = 0;
 				}
 			});
+			/* myPlayer.on("timeupdate", function(t){
+				console.log(t);
+			}); */
+			announceMyPresence();
 		}
-		
+
 		function initVideo() {
 			if (!myPlayer) {
 				setTimeout(initVideo, 1000);
@@ -54,38 +64,14 @@
 			}
 		}
 
-		/* fb.on("value", function(snapshot) {
-            if (snapshot.val() === null) {
-                console.log("Status not set");
-            } else {
-                var status = snapshot.val();
-                console.log("Status changed to " + status);
-                if (status == "play") {
-                    myPlayer.play();
-                } else if (status == "pause") {
-                    myPlayer.pause();
-                }
-            }
-		});
-
-		function publishEvent(eventType) {
-            console.log("Event " + eventType + " triggered...");
-            fb.set(eventType);
+		function announceMyPresence() {
+			myName = "Guest";
+			console.log();
 		}
-
-        function init() {
-            myPlayer = videojs("mvp");
-            myPlayer.on("play", function() { publishEvent("play") });
-            myPlayer.on("pause", function() { publishEvent("pause") });
-        } */
 
     </script>
 </head>
 <body>
-	<video id="mvp" controls preload="auto" data-setup="{}">
-	    <!-- <source src="//s3.amazonaws.com/wesync/big_buck_bunny.mp4" type='video/mp4' />
-		<source src="//s3.amazonaws.com/wesync/big_buck_bunny.webm" type='video/webm' />
-		Wait...Video JS is supposed to catch this! -->
-	</video>
+	<video id="mvp" controls preload="auto" data-setup="{}"></video>
 </body>
 </html>
