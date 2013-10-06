@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bootstrap 101 Template</title>
+<title>One Big Screen &mdash; watch videos with your online friends</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -34,7 +34,7 @@
                 <label class="sr-only" for="url">URL</label>
                 <input type="url" class="form-control" id="url" placeholder="http://">
             </div>
-            <button type="submit" class="btn btn-lg btn-success">Go!</button>
+            <button id="go" type="submit" class="btn btn-lg btn-success">Go!</button>
         </form>
     </div>
 
@@ -45,11 +45,6 @@
 
             <h4>Dropbox</h4>
             <p>Use the link from any video you have stored in Dropox. <a href="help/dropbox.html">Instructions for using a Dropbox video</a>.</p>
-
-            <!--
-            <h4>Subheading</h4>
-            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            -->
         </div>
 
         <div class="col-lg-6">
@@ -58,11 +53,6 @@
 
             <h4>Put.io <span class="badge">Coming soon!</span></h4>
             <p>Watch videos from torrents hosted on <a href="http://put.io/">Put.io</a>.</p>
-
-            <!--
-            <h4>Subheading</h4>
-            <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-            -->
         </div>
     </div>
 
@@ -76,6 +66,15 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("form").submit(function(event) {
+            event.preventDefault();
+            var url = $("#url").val();
+            window.location.href = "view.html?url=" + url;
+        });
+    });
+</script>
 </body>
 </html>
 
