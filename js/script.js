@@ -17,6 +17,11 @@ function getType(filepath) {
 var id = getParameterByName("id");
 var videoRef = fb.child("videos").child(id);
 
+function publishEvent(eventType) {
+	console.log("Sending event: " + eventType);
+    videoRef.update({"status": eventType});
+}
+
 // XXX TODO create a new participant
 videoRef.once("value", function(snapshot) {
     videoInfo = snapshot.val();
@@ -26,27 +31,51 @@ videoRef.once("value", function(snapshot) {
             type: getType(videoInfo.url),
             src: videoInfo.url,
         });
-
+		
         // set up local events
-        var publishEvent = function(eventType) {
-            videoRef.update({"status": eventType});
-            console.log("Sending event: " + eventType);
-        };
-        videoPlayer.on("play", function() {publishEvent("play")});
-        videoPlayer.on("pause", function() {publishEvent("pause")});
-        var lastUpdate = new Date();
+        videoPlayer.on("play", function() { publishEvent("play") });
+        videoPlayer.on("pause", function() { publishEvent("pause") });
+		
+		var people = videoRef.child('people');
+		var numPeople = 0;
+		var me, myName, myTime = 0;
+		
+        // Average the time of all participants and start there
+		people.once("value", function(snapshot) {
+			var everyone = snapshot.val();
+			numPeople = everyone.length;
+			for (i = 0; i < numPeople; i ++) {
+				console.log(everyone[i] + " is in this room");
+				myTime += everyone[i].currentTime;
+			}
+			if (numPeople)
+				myTime = myTime / numPeople;
+		});
+		/* people.on("child_added", function(snapshot) {
+			console.log(snapshot.name + " is in this room");
+			numPeople ++;
+		}); */
+		
+		// Add yourself to the people list
+		myName = prompt("Your name?"); // XXX TODO Sanitize
+		console.log("Welcome " + myName);
+		me = people.child(myName);
+		me.set({ "currentTime": myTime });
+		
+		// Setup disconnect callbacks
+		me.onDisconnect().remove();
+		
+        var lastUpdate = new Date().getTime();
         videoPlayer.on("timeupdate", function() {
-            now = new Date();
+            now = new Date().getTime();
             if ((now - lastUpdate) > 1000) {
                 lastUpdate = now;
-                // XXX TODO 
-                // update participant currentTime
+                me.update({ "currentTime": myTime });
             }
         });
-
+		
         // set up remote events
-        statusRef = videoRef.child("status");
-        statusRef.on("value", function(snapshot) {
+        videoRef.child("status").on("value", function(snapshot) {
             console.log("Received event: " + snapshot.val());
             status = snapshot.val();
             if (status === "play") {
@@ -55,12 +84,5 @@ videoRef.once("value", function(snapshot) {
                 videoPlayer.pause();
             }
         });
-
-        // start playing?
-        // XXX TODO compare to average currentTime of all participants
-        videoPlayer.currentTime(videoInfo.currentTime || 0);
-        if (videoInfo.status === "play") {
-            videoPlayer.play();
-        }
     });
 });
