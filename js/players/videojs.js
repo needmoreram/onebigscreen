@@ -85,6 +85,9 @@ videoRef.once("value", function(snapshot) {
                     } else if (action == "pause") {
                         videoPlayer.pause();
                     }
+                    // if we're paused and we get a pause event we need to 
+                    // change the variable back; same for pause I'd guess...
+                    userStateChange = true;
                 }
             });
         });
