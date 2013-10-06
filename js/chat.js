@@ -3,19 +3,18 @@ oneBigChat.urlBase = new Firebase('https://obs.firebaseio.com/videos/');
 
 /*global window, $, Handlebars, nomen: true*/
 oneBigChat.appOpened = function(videoId) {
-	oneBigChat.videoId = videoId;
-	console.log("The videoId is: " + videoId + "."); 
 	oneBigChat.initChatroom(videoId); 
 }	
 
 oneBigChat.initChatroom = function(videoId){ 
-	console.log(videoId); 
+	console.log("The vid id is: " + videoId); 
 	if(!videoId)
 	{
 		videoId = "default";
 	}
 	// Get a reference to the root of the chat data.
-	oneBigChat.messagesRef = new Firebase(oneBigChat.urlBase + videoId + "/chat");
+	oneBigChat.messagesRef = new Firebase(oneBigChat.urlBase + "/" + videoId + "/chat");
+	console.log("The Messages Ref link is: " + oneBigChat.messagesRef); 
 	oneBigChat.usersRef = new Firebase('https://8ozshort.firebaseIO.com/users');
 	// When the user presses enter on the message input, write the message to firebase.
 	$('#messageInput').keypress(function (e) {

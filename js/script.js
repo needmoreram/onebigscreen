@@ -51,8 +51,6 @@ videoRef.once("value", function(snapshot) {
 		var numPeople = 0;
 		var me, myName, myTime = 0;
 		
-		myName = prompt("Your name?"); // XXX TODO Sanitize
-
         // Average the time of all participants and start there
 		people.once("value", function(snapshot) {
 			var everyone = snapshot.val();
