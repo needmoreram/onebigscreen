@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>One Big Screen &mdash; watch videos with your online friends</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="imgs/favicon.png">                              
+<!-- Bootstrap -->
+<link href="bootstrap-3.0.0/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<!-- Custom style -->
+<link href="//getbootstrap.com/examples/offcanvas/offcanvas.css" rel=stylesheet" media="screen">
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="bootstrap-3.0.0/assets/js/html5shiv.js"></script>
+      <script src="bootstrap-3.0.0/assets/js/respond.min.js"></script>
+    <![endif]-->
+<link href="//vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h3 class="text-muted text-center"><a href="/"><img src="imgs/obsLogo5HD-t.png"/></a></h3>
+</div>
+
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+            <video id="player" controls preload="auto" class="video-js vjs-default-skin" width="100%" height="400"></video> 
+        </div><!--/span-->
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+            <div class="sidebar-nav">
+                <dl>
+                    <dt>Also watching</dt>
+                    <dd>Coming soon!</dd>
+                </dl>
+            </div><!--/.well -->
+        </div><!--/span-->
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>&copy; One Big Screen 2013</p>
+    </footer>
+</div><!--/.container-->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src='https://cdn.firebase.com/v0/firebase.js'></script>             
+<script src="//vjs.zencdn.net/4.1/video.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/players/videojs.js"></script>
+</body>
+</html>
