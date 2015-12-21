@@ -1,5 +1,4 @@
 var videoPlayer, me;
-var userName = $.cookie('userName') || "guest";
 var UPDATE_INTERVAL = 1;  // seconds
 
 // this global variable is used to differentiate between user triggered events  
@@ -25,7 +24,7 @@ videoRef.once("value", function(snapshot) {
         });
 
         // add ourselves
-        me = videoRef.child("people").push({"name": userName});
+        me = videoRef.child("people").push();
         me.onDisconnect().remove();
         var lastUpdate = new Date().getTime();
         videoPlayer.on("timeupdate", function() {
