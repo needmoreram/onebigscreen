@@ -1,0 +1,51 @@
+<html>
+<head>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+	<script src='https://cdn.firebase.com/v0/firebase.js'></script>
+	<script type="text/javascript">
+		
+	    var fb_fd;
+		
+		if (document.addEventListener)
+			document.addEventListener("DOMContentLoaded", init, false);
+		else
+			window.onload = init;
+		
+		function init() {
+			if (arguments.callee.done)
+				return;		
+			arguments.callee.done = true;
+			
+			$('#fetch_content').bind("click", 
+				function (e) {
+					cstr = $('#cstr').val();
+					fb_fd = new Firebase('https://needmoreram.firebaseIO.com/' + cstr);
+					fb_fd.on('value', function(s) {
+						set_video(s.val().v);
+					})
+				});
+		}
+		
+		function set_video(v) {
+			$('<source/>', {
+				src: v + ".mp4",
+				type: 'video/mp4',
+				codecs: 'avc1.42E01E, mp4a.40.2'
+			}).appendTo('video').first();
+			$('<source/>', {
+				src: v + ".webm",
+				type: 'video/webm',
+				codecs: 'vp8, vorbis'
+			}).appendTo('video').first();
+		}
+	</script>
+</head>
+<body>
+	<!-- Polyglot HTML tag -->
+	<!-- <video controls="controls" preload="preload"> -->
+	<video controls>
+	</video>
+	<input type="text" id="cstr">
+	<button type="button" id="fetch_content">Fetch</button>
+</body>
+</html>
